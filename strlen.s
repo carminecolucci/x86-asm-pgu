@@ -1,13 +1,9 @@
-# strlen(str)
-# registers:
-#	%eax: length
-#	 %bl: char
-#	%edx: pointer
+# int strlen(char *str);
 .globl	strlen
-.type strlen, @function
+.type	strlen, @function
 strlen:
-	xorl	%eax, %eax
-	movl	4(%esp), %edx
+	xorl	%eax, %eax		# length = 0
+	movl	4(%esp), %edx		# edx: str
 loop:
 	movb	(%edx), %bl
 	cmpb	$0, %bl
