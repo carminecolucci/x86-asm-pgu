@@ -41,19 +41,9 @@ read_users_loop:
 	addl	$8, %esp
 	cmpl	$USER_SIZE, %eax
 	jne	exit
-
-print_user:
-	pushl	$(BUFFER + USER_FIRSTNAME)
-	call	strlen
-	movl	%eax, %edx
-	movl	$SYS_WRITE, %eax
-	movl	$STDOUT, %ebx
-	popl	%ecx
-	int	$SYSCALL
-
-	pushl	$STDOUT
-	call	write_newline
-	addl	$4, %esp
+	
+	pushl	$BUFFER
+	call	print_user
 	jmp	read_users_loop
 
 exit:
