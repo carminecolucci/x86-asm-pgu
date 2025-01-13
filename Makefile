@@ -9,10 +9,10 @@ targets	:= exit maximum power factorial toupper \
 objs	:= exit.o maximum.o power.o factorial.o toupper.o \
 	   user.o users-write.o users-read.o strlen.o \
 	   write-newline.o users-add-year.o printf-libc.o \
-	   users-read-malloc.o malloc.o itoa.o
+	   users-read-malloc.o malloc.o itoa.o libmalloc.o
 
-#shlibs		:= libuser.so
-# libuser-objs	:= user.o strlen.o write-newline.o
+shlibs		:= libmalloc.so
+libmalloc-objs	:= libmalloc.o
 
 AS := as
 LD := ld
@@ -32,12 +32,12 @@ endif
 dynlink	:= users-% printf-libc
 $(dynlink):	LDFLAGS += -dynamic-linker /lib/ld-linux.so.2
 
-#users-%:	LIBS += -L. -rpath=. -luser
+users-read-malloc:	LIBS += -L. -rpath=. -lmalloc
 printf-libc:	LIBS += -L/usr/lib32 -lc
 
 users-write:		strlen.o write-newline.o user.o itoa.o
 users-read:		strlen.o write-newline.o user.o itoa.o
-users-read-malloc:	strlen.o write-newline.o malloc.o user.o itoa.o
+users-read-malloc:	strlen.o write-newline.o user.o itoa.o | libmalloc.so
 users-add-year:		strlen.o write-newline.o user.o itoa.o
 
 .PHONY: all
